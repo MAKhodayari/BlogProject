@@ -19,20 +19,26 @@ class Post(BaseModel):
     category = models.ManyToManyField('Category')
     author = models.ForeignKey(User, models.PROTECT)
     previous_post = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.slug = slugify(self.title)
         super().save(force_insert, force_update, using, update_fields)
+
+    def __str__(self):
+        return f'{self.title}'
 
 
 class Category(BaseModel):
     title = models.CharField(max_length=15, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.slug = slugify(self.title)
         super().save(force_insert, force_update, using, update_fields)
+
+    def __str__(self):
+        return f'{self.title}'
 
     class Meta:
         verbose_name_plural = 'Categories'
