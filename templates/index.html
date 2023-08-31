@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ message }}</h1>
+    <p>This blog is maintained by <b>{{ owner }}</b></p>
+    <p>To see posts click
+        <a href="{% url 'post_list' %}">here</a>
+        , and to check categories click
+        <a href="{% url 'category_list' %}">here</a>
+        .</p>
+</body>
+</html>

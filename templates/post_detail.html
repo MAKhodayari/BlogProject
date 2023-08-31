@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+    <div>
+        <h1>{{ object.title }}</h1>
+        <p>{{ object.content }}</p>
+        <p>By <b>{{ object.author }}</b> in {{ object.category.all | join:', ' }}</p>
+        {% if object.previous_post is not None %}
+            <p>This post is continued from
+                <a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
+            </p>
+        {% endif %}
+    </div>
+    <div>
+        {% if object.comment_set.all.exists %}
+            <hr>
+            <h2>Comments</h2>
+            {% for comment in object.comment_set.all %}
+                <p><b>{{ comment.author }}</b>:<br>{{ comment.content }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
