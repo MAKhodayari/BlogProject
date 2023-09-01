@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
+from rest_framework import viewsets
 
-from Blog.models import Post, Category
+from Blog.models import *
+from Blog.serializers import *
 
 
 class IndexView(TemplateView):
@@ -29,3 +31,18 @@ class CategoryListView(ListView):
 class CategoryDetailView(DetailView):
     queryset = Category.objects.all()
     template_name = 'category_detail.html'
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
