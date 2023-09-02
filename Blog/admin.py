@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.template.defaultfilters import truncatechars
 
+from Blog.actions import delete_post
 from Blog.models import *
 
 
@@ -13,6 +14,8 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['category', 'is_deleted', 'is_published']
     search_fields = ['title', 'content', 'author__username', 'category__title']
     ordering = ['title', 'author']
+    actions = [delete_post]
+    delete_post.short_description = 'Delete Posts'
     list_per_page = 10
 
     def shorten_content(self, obj):
