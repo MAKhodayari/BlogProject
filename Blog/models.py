@@ -7,13 +7,29 @@ class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
 
 
-class Post(BaseModel):
+class LikableModel(models.Model):
+    likes = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+    def like(self):
+        self.likes += 1
+        self.save()
+
+    def dislike(self):
+        self.dislikes += 1
+        self.save()
+
+
+class Post(BaseModel, LikableModel):
     title = models.CharField(max_length=25, unique=True)
     content = models.TextField()
     category = models.ManyToManyField('Category')
@@ -44,7 +60,8 @@ class Category(BaseModel):
         verbose_name_plural = 'Categories'
 
 
-class Comment(BaseModel):
+class Comment(BaseModel, LikableModel):
+    post = models.ForeignKey('Post', models.PROTECT)
     author = models.CharField(max_length=30)
     content = models.TextField()
-    post = models.ForeignKey('Post', models.PROTECT)
+    previous_comment = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
