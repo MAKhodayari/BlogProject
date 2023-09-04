@@ -65,3 +65,6 @@ class Comment(BaseModel, LikableModel):
     author = models.CharField(max_length=30)
     content = models.TextField()
     previous_comment = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.content}'
