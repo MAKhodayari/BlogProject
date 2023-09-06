@@ -8,7 +8,7 @@ from Blog.serializers import *
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-    extra_context = {'title': 'Index', 'message': 'Welcome', 'owner': 'Mohammad Ali Khodayari'}
+    extra_context = {'title': 'Home', 'message': 'Welcome', 'owner': 'Mohammad Ali Khodayari'}
 
 
 class PostListView(ListView):

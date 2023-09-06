@@ -11,21 +11,29 @@
     <div>
         <h1>{{ object.title }}</h1>
         <p>{{ object.content }}</p>
-        <p>By <b>{{ object.author }}</b> in {{ object.category.all | join:', ' }}</p>
+        <p>
+            By {{ object.author }} in
+            {% for category in object.category.all %}
+                <a href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </p>
         {% if object.previous_post is not None %}
             <p>This post is continued from
                 <a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
             </p>
         {% endif %}
+        <p>Likes: {{ object.likes }} | Dislikes: {{ object.dislikes }}</p>
     </div>
-    <div>
-        {% if object.comment_set.all.exists %}
-            <hr>
+    {% if object.comment_set.all.exists %}
+        <div>
             <h2>Comments</h2>
             {% for comment in object.comment_set.all %}
-                <p><b>{{ comment.author }}</b>:<br>{{ comment.content }}</p>
+                <p>
+                    {{ comment.author }}:<br>{{ comment.content }}<br>
+                    Likes: {{ comment.likes }} | Dislikes: {{ comment.dislikes }}
+                </p>
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 </body>
 </html>

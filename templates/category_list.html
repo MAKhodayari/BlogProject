@@ -8,9 +8,13 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <h1>{{ header }}</h1>
-    {% for object in object_list %}
-        <h2><a href="{% url 'category_detail' object.slug %}">{{ object.title }}</a></h2>
-    {% endfor %}
+    {% if object_list.exists %}
+        <h1>{{ header }}</h1>
+        {% for object in object_list %}
+            <h2><a href="{% url 'category_detail' object.slug %}">{{ object.title }}</a></h2>
+        {% endfor %}
+    {% else %}
+        <h1>No Category Available</h1>
+    {% endif %}
 </body>
 </html>
