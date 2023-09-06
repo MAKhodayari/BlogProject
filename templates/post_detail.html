@@ -22,7 +22,21 @@
                 <a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
             </p>
         {% endif %}
-        <p>Likes: {{ object.likes }} | Dislikes: {{ object.dislikes }}</p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'like_post' post.slug %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+                {{ object.likes }}
+            </form>
+            <form action="{% url 'dislike_post' post.slug %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Dislike</button>
+                {{ object.dislikes }}
+            </form>
+        {% else %}
+            <p>Likes: {{ object.likes }} | Dislikes: {{ object.dislikes }}</p>
+            <p>Please log in to like / dislike</p>
+        {% endif %}
     </div>
     {% if object.comment_set.all.exists %}
         <div>

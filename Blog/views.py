@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from rest_framework import viewsets
 
@@ -20,6 +23,19 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     queryset = Post.objects.all()
     template_name = 'post_detail.html'
+
+
+class ReactToPostView(View):
+    reaction = None
+
+    @method_decorator(login_required)
+    def post(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        if self.reaction == 'like':
+            post.like()
+        elif self.reaction == 'dislike':
+            post.dislike()
+        return redirect('post_detail', slug=post.slug)
 
 
 class CategoryListView(ListView):
