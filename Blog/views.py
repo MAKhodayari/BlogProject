@@ -10,68 +10,68 @@ from Blog.serializers import *
 
 
 class IndexView(TemplateView):
-    template_name = 'index.html'
-    extra_context = {'title': 'Home', 'message': 'Welcome', 'owner': 'Mohammad Ali Khodayari'}
+	template_name = 'index.html'
+	extra_context = {'title': 'Home', 'message': 'Welcome', 'owner': 'Mohammad Ali Khodayari'}
 
 
 class PostListView(ListView):
-    queryset = Post.objects.all()
-    template_name = 'post_list.html'
-    extra_context = {'title': 'Posts', 'header': 'Post List'}
+	queryset = Post.objects.all()
+	template_name = 'post_list.html'
+	extra_context = {'title': 'Posts', 'header': 'Post List'}
 
 
 class PostDetailView(DetailView):
-    queryset = Post.objects.all()
-    template_name = 'post_detail.html'
+	queryset = Post.objects.all()
+	template_name = 'post_detail.html'
 
 
 class ReactToPostView(View):
-    reaction = None
+	reaction = None
 
-    @method_decorator(login_required)
-    def post(self, request, slug):
-        post = Post.objects.get(slug=slug)
-        if self.reaction == 'like':
-            post.like()
-        elif self.reaction == 'dislike':
-            post.dislike()
-        return redirect('post_detail', slug=post.slug)
+	@method_decorator(login_required)
+	def post(self, request, slug):
+		post = Post.objects.get(slug=slug)
+		if self.reaction == 'like':
+			post.like()
+		elif self.reaction == 'dislike':
+			post.dislike()
+		return redirect('post_detail', slug=post.slug)
 
 
 class ReactToCommentView(View):
-    reaction = None
+	reaction = None
 
-    @method_decorator(login_required)
-    def post(self, request, pk):
-        comment = Comment.objects.get(id=pk)
-        if self.reaction == 'like':
-            comment.like()
-        elif self.reaction == 'dislike':
-            comment.dislike()
-        return redirect('post_detail', slug=comment.post.slug)
+	@method_decorator(login_required)
+	def post(self, request, pk):
+		comment = Comment.objects.get(id=pk)
+		if self.reaction == 'like':
+			comment.like()
+		elif self.reaction == 'dislike':
+			comment.dislike()
+		return redirect('post_detail', slug=comment.post.slug)
 
 
 class CategoryListView(ListView):
-    queryset = Category.objects.all()
-    template_name = 'category_list.html'
-    extra_context = {'title': 'Categories', 'header': 'Category List'}
+	queryset = Category.objects.all()
+	template_name = 'category_list.html'
+	extra_context = {'title': 'Categories', 'header': 'Category List'}
 
 
 class CategoryDetailView(DetailView):
-    queryset = Category.objects.all()
-    template_name = 'category_detail.html'
+	queryset = Category.objects.all()
+	template_name = 'category_detail.html'
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+	queryset = Post.objects.all()
+	serializer_class = PostSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+	queryset = Comment.objects.all()
+	serializer_class = CommentSerializer

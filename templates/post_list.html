@@ -1,27 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ title }}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{{ title }}</title>
 </head>
 <body>
-    {% if object_list.exists %}
-        <h1>{{ header }}</h1>
-        {% for object in object_list %}
-            <h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
-            <p>{{ object.content | truncatechars:150 }}</p>
-            <p>
-                By {{ object.author }} in
-                {% for category in object.category.all %}
-                    <a href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </p>
-        {% endfor %}
-    {% else %}
-        <h1>No Post Available</h1>
-    {% endif %}
+{% if object_list.exists %}
+	<h1>{{ header }}</h1>
+	{% for object in object_list %}
+		<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
+		<p>{{ object.content | truncatechars:150 }}</p>
+		<p>
+			By {{ object.author }} in
+			{% for category in object.category.all %}
+				<a href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>{% if not forloop.last %},
+			{% endif %}
+			{% endfor %}
+		</p>
+	{% endfor %}
+{% else %}
+	<h1>No Post Available</h1>
+{% endif %}
 </body>
 </html>
