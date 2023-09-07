@@ -38,6 +38,19 @@ class ReactToPostView(View):
         return redirect('post_detail', slug=post.slug)
 
 
+class ReactToCommentView(View):
+    reaction = None
+
+    @method_decorator(login_required)
+    def post(self, request, pk):
+        comment = Comment.objects.get(id=pk)
+        if self.reaction == 'like':
+            comment.like()
+        elif self.reaction == 'dislike':
+            comment.dislike()
+        return redirect('post_detail', slug=comment.post.slug)
+
+
 class CategoryListView(ListView):
     queryset = Category.objects.all()
     template_name = 'category_list.html'

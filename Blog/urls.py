@@ -12,6 +12,8 @@ urlpatterns = [
     path('posts/<slug>/', PostDetailView.as_view(), name='post_detail'),
     path('post/<slug>/like/', ReactToPostView.as_view(reaction='like'), name='like_post'),
     path('post/<slug>/dislike/', ReactToPostView.as_view(reaction='dislike'), name='dislike_post'),
+    path('comments/<pk>/like/', ReactToCommentView.as_view(reaction='like'), name='like_comment'),
+    path('comments/<pk>/dislike/', ReactToCommentView.as_view(reaction='dislike'), name='dislike_comment'),
     path('categories/', CategoryListView.as_view(), name='category_list'),
     path('categories/<slug>/', CategoryDetailView.as_view(), name='category_detail'),
 

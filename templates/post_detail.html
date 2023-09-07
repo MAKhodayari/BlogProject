@@ -42,10 +42,26 @@
         <div>
             <h2>Comments</h2>
             {% for comment in object.comment_set.all %}
-                <p>
-                    {{ comment.author }}:<br>{{ comment.content }}<br>
-                    Likes: {{ comment.likes }} | Dislikes: {{ comment.dislikes }}
-                </p>
+                <p>{{ comment.author }}:<br>{{ comment.content }}</p>
+                {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'like_comment' comment.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        <button type="submit">Like</button>
+                        {{ comment.likes }}
+                    </form>
+                    <form method="POST" action="{% url 'dislike_comment' comment.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        <button type="submit">Dislike</button>
+                        {{ comment.dislikes }}
+                    </form>
+                {% else %}
+                    <p>Likes: {{ comment.likes }} | Dislikes: {{ comment.dislikes }}</p>
+                    {% if forloop.last %}
+                        <p>Please log in to like / dislike</p>
+                    {% endif %}
+                {% endif %}
             {% endfor %}
         </div>
     {% endif %}
