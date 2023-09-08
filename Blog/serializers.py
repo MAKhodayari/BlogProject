@@ -6,7 +6,7 @@ from Blog.models import *
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ['id', 'post', 'author', 'content']
+		fields = ['id', 'post', 'author', 'content', 'previous_comment']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -14,10 +14,12 @@ class PostSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Post
-		fields = ['id', 'title', 'content', 'author', 'category', 'previous_post', 'comment_set']
+		fields = [
+			'id', 'title', 'content', 'author', 'category', 'previous_post', 'slug', 'likes', 'dislikes', 'views',
+			'comment_set']
 
 
 class CategorySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Category
-		fields = ['id', 'title']
+		fields = ['id', 'title', 'slug']

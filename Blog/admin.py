@@ -49,8 +49,9 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
 	fields = ['author', 'content', 'post', 'previous_comment']
-	list_display = ['author', 'shorten_content', 'post', 'shorten_comment', 'likes', 'dislikes',
-					'is_deleted', 'is_published']
+	list_display = [
+		'author', 'shorten_content', 'post', 'shorten_comment', 'likes', 'dislikes', 'is_deleted', 'is_published'
+	]
 	search_fields = ['author', 'content', 'post__title']
 	ordering = ['-post__title', '-created_at']
 	list_per_page = 10
