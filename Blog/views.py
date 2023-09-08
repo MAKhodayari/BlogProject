@@ -24,6 +24,11 @@ class PostDetailView(DetailView):
 	queryset = Post.objects.all()
 	template_name = 'post_detail.html'
 
+	def get_object(self, queryset=None):
+		obj = super().get_object(queryset)
+		obj.increment_view()
+		return obj
+
 
 class ReactToPostView(View):
 	reaction = None
