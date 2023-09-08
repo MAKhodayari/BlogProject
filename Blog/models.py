@@ -36,10 +36,15 @@ class Post(BaseModel, LikableModel):
 	author = models.ForeignKey(User, models.PROTECT)
 	previous_post = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
 	slug = models.SlugField(unique=True)
+	views = models.PositiveIntegerField(default=0)
 
 	def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 		self.slug = slugify(self.title)
 		super().save(force_insert, force_update, using, update_fields)
+
+	def increment_view(self):
+		self.views += 1
+		self.save()
 
 	def __str__(self):
 		return f'{self.title}'

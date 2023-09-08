@@ -8,8 +8,10 @@ from Blog.models import *
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
 	fields = ['title', 'content', 'category', 'author', 'previous_post']
-	list_display = ['title', 'shorten_content', 'get_categories', 'author', 'previous_post',
-					'likes', 'dislikes', 'get_comment_count', 'is_deleted', 'is_published']
+	list_display = [
+		'title', 'shorten_content', 'get_categories', 'author', 'previous_post', 'likes', 'dislikes',
+		'get_comment_count', 'views', 'is_deleted', 'is_published'
+	]
 	list_filter = ['category', 'is_deleted', 'is_published']
 	search_fields = ['title', 'content', 'author__username']
 	ordering = ['-created_at']
@@ -47,7 +49,8 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
 	fields = ['author', 'content', 'post', 'previous_comment']
-	list_display = ['author', 'shorten_content', 'post', 'shorten_comment', 'is_deleted', 'is_published']
+	list_display = ['author', 'shorten_content', 'post', 'shorten_comment', 'likes', 'dislikes',
+					'is_deleted', 'is_published']
 	search_fields = ['author', 'content', 'post__title']
 	ordering = ['-post__title', '-created_at']
 	list_per_page = 10

@@ -18,6 +18,7 @@
 		{% endif %}
 		{% endfor %}
 	</p>
+	<p>Views: {{ object.views }}</p>
 	{% if object.previous_post is not None %}
 		<p>This post is continued from
 			<a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
