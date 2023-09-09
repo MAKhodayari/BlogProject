@@ -4,7 +4,17 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 
+class BaseManager(models.Manager):
+
+	def get_all(self):
+		return super().get_queryset()
+
+	def get_published(self):
+		return super().get_queryset().filter(is_published=True)
+
+
 class BaseModel(models.Model):
+	objects = BaseManager()
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	is_deleted = models.BooleanField(default=False)
@@ -14,7 +24,7 @@ class BaseModel(models.Model):
 		abstract = True
 
 
-class LikableModel(models.Model):
+class IntractableModel(models.Model):
 	likes = models.PositiveIntegerField(default=0)
 	dislikes = models.PositiveIntegerField(default=0)
 
@@ -30,10 +40,11 @@ class LikableModel(models.Model):
 		self.save()
 
 
-class Post(BaseModel, LikableModel):
+class Post(BaseModel, IntractableModel):
 	title = models.CharField(max_length=25, unique=True)
 	content = models.TextField()
 	category = models.ManyToManyField('Category')
+	tag = models.ManyToManyField('Tag')
 	author = models.ForeignKey(User, models.PROTECT)
 	previous_post = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
 	slug = models.SlugField(unique=True)
@@ -66,7 +77,19 @@ class Category(BaseModel):
 		verbose_name_plural = 'Categories'
 
 
-class Comment(BaseModel, LikableModel):
+class Tag(BaseModel):
+	title = models.CharField(max_length=15, unique=True)
+	slug = models.SlugField(unique=True)
+
+	def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+		self.slug = slugify(self.title)
+		super().save(force_insert, force_update, using, update_fields)
+
+	def __str__(self):
+		return f'{self.title}'
+
+
+class Comment(BaseModel, IntractableModel):
 	post = models.ForeignKey('Post', models.PROTECT)
 	author = models.CharField(max_length=30)
 	content = models.TextField()

@@ -8,15 +8,14 @@
 	<title>{{ title }}</title>
 	<link rel="stylesheet" href="/static/css.css"/>
 </head>
-<body>
-<div class="intro-box">
-	<h1>{{ message }}</h1>
-	<p>This blog is maintained by <b>{{ owner }}</b></p>
-	<p>
-		<a class="button" href="{% url 'post_list' %}">Posts</a>
-		<a class="button" href="{% url 'category_list' %}">Categories</a>
-		<a class="button" href="{% url 'tag_list' %}">Tags</a>
-	</p>
-</div>
+<body class="post-list">
+{% if object_list.exists %}
+	<h1>{{ header }}</h1>
+	{% for object in object_list %}
+		<h2 class="cat-entry"><a href="{% url 'tag_detail' object.slug %}">{{ object.title }}</a></h2>
+	{% endfor %}
+{% else %}
+	<h1>No Tag Available</h1>
+{% endif %}
 </body>
 </html>

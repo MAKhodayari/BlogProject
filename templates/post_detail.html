@@ -41,8 +41,12 @@
 		</div>
 		<div class="lowkey">Please log in to like / dislike</div>
 	{% endif %}
-	<br/>
+	<br>
 	<div style="font-size: 18px">Views: {{ object.views }}</div>
+	<br>
+	{% for tag in object.tag.all %}
+		<a class="chip" href="{% url 'tag_detail' tag.slug %}">{{ tag.title }}</a>
+	{% endfor %}
 </div>
 {% if object.comment_set.all.exists %}
 	<div class="comment-section">

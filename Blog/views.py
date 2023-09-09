@@ -15,13 +15,13 @@ class IndexView(TemplateView):
 
 
 class PostListView(ListView):
-	queryset = Post.objects.all()
+	queryset = Post.objects.get_published()
 	template_name = 'post_list.html'
 	extra_context = {'title': 'Posts', 'header': 'Post List'}
 
 
 class PostDetailView(DetailView):
-	queryset = Post.objects.all()
+	queryset = Post.objects.get_published()
 	template_name = 'post_detail.html'
 
 	def get_object(self, queryset=None):
@@ -57,26 +57,42 @@ class ReactToCommentView(View):
 
 
 class CategoryListView(ListView):
-	queryset = Category.objects.all()
+	queryset = Category.objects.get_published()
 	template_name = 'category_list.html'
 	extra_context = {'title': 'Categories', 'header': 'Category List'}
 
 
 class CategoryDetailView(DetailView):
-	queryset = Category.objects.all()
+	queryset = Category.objects.get_published()
 	template_name = 'category_detail.html'
 
 
+class TagListView(ListView):
+	queryset = Tag.objects.get_published()
+	template_name = 'tag_list.html'
+	extra_context = {'title': 'Categories', 'header': 'Category List'}
+
+
+class TagDetailView(DetailView):
+	queryset = Tag.objects.get_published()
+	template_name = 'tag_detail.html'
+
+
 class PostViewSet(viewsets.ModelViewSet):
-	queryset = Post.objects.all()
+	queryset = Post.objects.get_published()
 	serializer_class = PostSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-	queryset = Category.objects.all()
+	queryset = Category.objects.get_published()
 	serializer_class = CategorySerializer
 
 
+class TagViewSet(viewsets.ModelViewSet):
+	queryset = Tag.objects.get_published()
+	serializer_class = TagSerializer
+
+
 class CommentViewSet(viewsets.ModelViewSet):
-	queryset = Comment.objects.all()
+	queryset = Comment.objects.get_published()
 	serializer_class = CommentSerializer

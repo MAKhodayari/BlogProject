@@ -16,6 +16,8 @@ urlpatterns = [
 	path('comments/<pk>/dislike/', ReactToCommentView.as_view(reaction='dislike'), name='dislike_comment'),
 	path('categories/', CategoryListView.as_view(), name='category_list'),
 	path('categories/<slug>/', CategoryDetailView.as_view(), name='category_detail'),
+	path('tags/', TagListView.as_view(), name='tag_list'),
+	path('tags/<slug>/', TagDetailView.as_view(), name='tag_detail'),
 
 	# Authentication Views
 	path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -30,6 +32,7 @@ urlpatterns = [
 router = DefaultRouter()
 router.register('api/posts', PostViewSet)
 router.register('api/categories', CategoryViewSet)
+router.register('api/tags', TagViewSet)
 router.register('api/comments', CommentViewSet)
 
 urlpatterns += router.urls

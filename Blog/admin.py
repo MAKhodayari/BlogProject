@@ -7,9 +7,9 @@ from Blog.models import *
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-	fields = ['title', 'content', 'category', 'author', 'previous_post']
+	fields = ['title', 'content', 'category', 'tag', 'author', 'previous_post']
 	list_display = [
-		'title', 'shorten_content', 'get_categories', 'author', 'previous_post', 'likes', 'dislikes',
+		'title', 'shorten_content', 'get_categories', 'get_tags', 'author', 'previous_post', 'likes', 'dislikes',
 		'get_comment_count', 'views', 'is_deleted', 'is_published'
 	]
 	list_filter = ['category', 'is_deleted', 'is_published']
@@ -28,6 +28,11 @@ class PostAdmin(admin.ModelAdmin):
 
 	get_categories.short_description = 'categories'
 
+	def get_tags(self, obj):
+		return ', '.join([t.title for t in obj.tag.all()])
+
+	get_tags.short_description = 'tags'
+
 	def get_comment_count(self, obj):
 		return obj.comment_set.count()
 
@@ -36,6 +41,19 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+	fields = ['title']
+	list_display = ['title', 'get_post_count', 'is_deleted', 'is_published']
+	ordering = ['title']
+	actions = [delete, include, publish]
+
+	def get_post_count(self, obj):
+		return obj.post_set.count()
+
+	get_post_count.short_description = 'post count'
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
 	fields = ['title']
 	list_display = ['title', 'get_post_count', 'is_deleted', 'is_published']
 	ordering = ['title']
