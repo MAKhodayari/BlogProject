@@ -6,24 +6,23 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>{{ object.title }}</title>
+	<link rel="stylesheet" href="/static/css.css"/>
 </head>
 <body>
-<div>
+<div class="post-detail">
 	<h1>{{ object.title }}</h1>
-	<p>{{ object.content }}</p>
-	<p>
-		By {{ object.author }} in
+	<div style="margin-block: -30px 15px">
+		<div style="margin-bottom: 10px">By {{ object.author }}</div>
 		{% for category in object.category.all %}
-			<a href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>{% if not forloop.last %},
-		{% endif %}
+			<a class="chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
 		{% endfor %}
-	</p>
-	<p>Views: {{ object.views }}</p>
+	</div>
 	{% if object.previous_post is not None %}
-		<p>This post is continued from
+		<div>This post is continued from
 			<a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
-		</p>
+		</div>
 	{% endif %}
+	<p>{{ object.content }}</p>
 	{% if user.is_authenticated %}
 		<form action="{% url 'like_post' post.slug %}" method="post">
 			{% csrf_token %}
@@ -39,6 +38,7 @@
 		<p>Likes: {{ object.likes }} | Dislikes: {{ object.dislikes }}</p>
 		<p>Please log in to like / dislike</p>
 	{% endif %}
+	<p>Views: {{ object.views }}</p>
 </div>
 {% if object.comment_set.all.exists %}
 	<div>

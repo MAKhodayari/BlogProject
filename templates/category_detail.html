@@ -6,14 +6,19 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>{{ object.title }}</title>
+	<link rel="stylesheet" href="/static/css.css"/>
 </head>
-<body>
+<body class="post-list">
 {% if object.post_set.all.exists %}
 	<h1>Posts in {{ object.title }}</h1>
 	{% for object in object.post_set.all %}
-		<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
-		<p>{{ object.content | truncatechars:150 }}</p>
-		<p>By {{ object.author }}</p>
+		<div class="post-entry">
+			<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
+			<p>{{ object.content | truncatechars:150 }}</p>
+			<p>
+				By {{ object.author }}
+			</p>
+		</div>
 	{% endfor %}
 {% else %}
 	<h1>No Post Available</h1>
