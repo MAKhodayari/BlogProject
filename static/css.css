@@ -136,37 +136,39 @@ h1 {
 	max-width: 1000px;
 	border-inline-start: 2px solid #AAD;
 	padding: 10px;
-	min-height: 100%;
-	margin-block: -10px;
+	margin-top: -10px;
 }
 
-.post-detail > div {
+.post-detail > .info {
 	opacity: .81;
 }
 
-.post-detail > p {
-	font-size: 1.2em;
-	margin-top: 30px;
+.post-detail p,
+.comment-section p {
+	font-size: 1.1em;
+	margin-block: 5px;
+	opacity: .95;
 	font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.post-detail > .info > span {
+.info > span {
 	padding: 2px 5px;
 	margin-inline: 2px;
 	display: inline-block;
 }
 
-.post-detail > .info > span.up > span {
+.info > span > span {
 	font-weight: 600;
 	margin-inline-end: 3px;
+	opacity: .9;
 }
 
-.post-detail > .info > span.up > span {
-	color: #55F;
+.info > span.up > span {
+	color: #44F;
 }
 
-.post-detail > .info > span.down > span {
-	color: #E33;
+.info > span.down > span {
+	color: #E44;
 }
 
 .cat-entry {
@@ -188,4 +190,23 @@ h1 {
 .cat-entry > a:hover {
 	padding-inline-start: 15px;
 	border-color: #44B;
+}
+
+.comment-section {
+	margin: auto;
+	max-width: 1000px;
+	border-inline-start: 2px solid #DAA;
+	padding: 10px;
+	margin-block: 10px;
+}
+
+.comment-section > div {
+	border-inline-start: 2px solid #CCC;
+	margin-block: 10px;
+	margin-inline: -5px;
+	padding-inline: 8px;
+}
+
+.lowkey {
+	opacity: .5;
 }
