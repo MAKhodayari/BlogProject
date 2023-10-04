@@ -1,11 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from rest_framework import viewsets
 
-from Blog.models import *
 from Blog.serializers import *
 
 
@@ -30,10 +28,9 @@ class PostDetailView(DetailView):
 		return obj
 
 
-class ReactToPostView(View):
+class ReactToPostView(LoginRequiredMixin, View):
 	reaction = None
 
-	@method_decorator(login_required)
 	def post(self, request, slug):
 		post = Post.objects.get(slug=slug)
 		if self.reaction == 'like':
@@ -43,10 +40,9 @@ class ReactToPostView(View):
 		return redirect('post_detail', slug=post.slug)
 
 
-class ReactToCommentView(View):
+class ReactToCommentView(LoginRequiredMixin, View):
 	reaction = None
 
-	@method_decorator(login_required)
 	def post(self, request, pk):
 		comment = Comment.objects.get(id=pk)
 		if self.reaction == 'like':
