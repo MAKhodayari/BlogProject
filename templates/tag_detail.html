@@ -9,14 +9,14 @@
 	<link rel="stylesheet" href="/static/css.css"/>
 </head>
 <body class="post-list">
-{% if object.post_set.all.exists %}
+{% if object.posts.all.exists %}
 	<h1>Posts in {{ object.title }}</h1>
-	{% for object in object.post_set.all %}
+	{% for object in object.posts.all %}
 		<div class="post-entry">
 			<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
-			<p>{{ object.content | truncatechars:150 }}</p>
+			<p>{{ object.content | truncatewords:15 }}</p>
 			<p>
-				By {{ object.author }}
+				<a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a>
 			</p>
 		</div>
 	{% endfor %}

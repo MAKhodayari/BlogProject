@@ -66,12 +66,26 @@ class CategoryDetailView(DetailView):
 class TagListView(ListView):
 	queryset = Tag.objects.get_published()
 	template_name = 'tag_list.html'
-	extra_context = {'title': 'Categories', 'header': 'Category List'}
+	extra_context = {'title': 'Tags', 'header': 'Tag List'}
 
 
 class TagDetailView(DetailView):
 	queryset = Tag.objects.get_published()
 	template_name = 'tag_detail.html'
+
+
+class AuthorListView(ListView):
+	queryset = User.objects.all()
+	template_name = 'author_list.html'
+	extra_context = {'title': 'Authors', 'header': 'Author List'}
+
+
+class AuthorDetailView(DetailView):
+	queryset = User.objects.all()
+	template_name = 'author_detail.html'
+
+	def get_object(self, queryset=None):
+		return User.objects.get(username=self.kwargs['username'])
 
 
 class PostViewSet(viewsets.ModelViewSet):

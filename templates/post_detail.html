@@ -11,15 +11,17 @@
 <body>
 <div class="post-detail">
 	<h1>{{ object.title }}</h1>
-	<div style="margin-block: -30px 15px">
-		<div style="margin-bottom: 10px">By {{ object.author }}</div>
+	<div style="margin-block: -15px 15px">
+		<div style="margin-bottom: 10px">
+			By <a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a>
+		</div>
 		{% for category in object.category.all %}
 			<a class="chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
 		{% endfor %}
 	</div>
-	{% if object.previous_post is not None %}
+	{% if object.parent_post is not None %}
 		<div>This post is continued from
-			<a href="{% url 'post_detail' object.previous_post.slug %}">{{ object.previous_post }}</a>
+			<a href="{% url 'post_detail' object.parent_post.slug %}">{{ object.parent_post }}</a>
 		</div>
 	{% endif %}
 	<p>{{ object.content }}</p>
@@ -48,10 +50,10 @@
 		<a class="chip" href="{% url 'tag_detail' tag.slug %}">{{ tag.title }}</a>
 	{% endfor %}
 </div>
-{% if object.comment_set.all.exists %}
+{% if object.comments.all.exists %}
 	<div class="comment-section">
 		<h2>Comments</h2>
-		{% for comment in object.comment_set.all %}
+		{% for comment in object.comments.all %}
 			<div>
 				<div class="username">{{ comment.author }}:</div>
 				<p>{{ comment.content }}</p>

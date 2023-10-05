@@ -18,6 +18,8 @@ urlpatterns = [
 	path('categories/<slug>/', CategoryDetailView.as_view(), name='category_detail'),
 	path('tags/', TagListView.as_view(), name='tag_list'),
 	path('tags/<slug>/', TagDetailView.as_view(), name='tag_detail'),
+	path('authors/', AuthorListView.as_view(), name='author_list'),
+	path('authors/<username>/', AuthorDetailView.as_view(), name='author_detail'),
 
 	# Authentication Views
 	path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

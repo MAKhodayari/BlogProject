@@ -12,19 +12,10 @@
 {% if object_list.exists %}
 	<h1>{{ header }}</h1>
 	{% for object in object_list %}
-		<div class="post-entry">
-			<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
-			<p>{{ object.content | truncatewords:15 }}</p>
-			<p>
-				By <a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a> in
-				{% for category in object.category.all %}
-					<a class="chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
-				{% endfor %}
-			</p>
-		</div>
+		<h2 class="cat-entry"><a href="{% url 'author_detail' object.username %}">{{ object.username }}</a></h2>
 	{% endfor %}
 {% else %}
-	<h1>No Post Available</h1>
+	<h1>No Authors Available</h1>
 {% endif %}
 </body>
 </html>
