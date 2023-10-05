@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
+from django.template.defaultfilters import truncatewords
 from django.utils.text import slugify
 
 
@@ -43,10 +43,10 @@ class IntractableModel(models.Model):
 class Post(BaseModel, IntractableModel):
 	title = models.CharField(max_length=25, unique=True)
 	content = models.TextField()
-	category = models.ManyToManyField('Category')
-	tag = models.ManyToManyField('Tag')
-	author = models.ForeignKey(User, models.PROTECT)
-	previous_post = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
+	category = models.ManyToManyField('Category', related_name='posts')
+	tag = models.ManyToManyField('Tag', related_name='posts')
+	author = models.ForeignKey(User, models.PROTECT, related_name='posts')
+	parent_post = models.OneToOneField('self', models.PROTECT, related_name='posts', null=True, blank=True)
 	slug = models.SlugField(unique=True)
 	views = models.PositiveIntegerField(default=0)
 
@@ -65,6 +65,7 @@ class Post(BaseModel, IntractableModel):
 class Category(BaseModel):
 	title = models.CharField(max_length=15, unique=True)
 	slug = models.SlugField(unique=True)
+	parent_category = models.ForeignKey('self', models.PROTECT, related_name='categories', null=True, blank=True)
 
 	def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 		self.slug = slugify(self.title)
@@ -90,10 +91,10 @@ class Tag(BaseModel):
 
 
 class Comment(BaseModel, IntractableModel):
-	post = models.ForeignKey('Post', models.PROTECT)
+	post = models.ForeignKey('Post', models.PROTECT, related_name='comments')
 	author = models.CharField(max_length=30)
 	content = models.TextField()
-	previous_comment = models.OneToOneField('self', models.PROTECT, null=True, blank=True)
+	parent_comment = models.ForeignKey('self', models.PROTECT, related_name='comments', null=True, blank=True)
 
 	def __str__(self):
-		return f'{self.content}'
+		return f'{truncatewords(self.content, 15)}'
