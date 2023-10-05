@@ -6,41 +6,41 @@ from Blog.models import *
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ['id', 'post', 'author', 'content', 'previous_comment', 'likes', 'dislikes']
+		fields = ['id', 'post', 'author', 'content', 'parent_comment', 'likes', 'dislikes']
 
 	def to_representation(self, instance):
 		representation = super().to_representation(instance)
-		if representation['previous_comment'] is None:
-			representation.pop('previous_comment')
+		if representation['parent_comment'] is None:
+			representation.pop('parent_comment')
 		return representation
 
 
 class CommentNestedSerializer(CommentSerializer, serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ['author', 'content', 'previous_comment', 'likes', 'dislikes']
+		fields = ['author', 'content', 'parent_comment', 'likes', 'dislikes']
 
 
 class PostSerializer(serializers.ModelSerializer):
-	comment_set = CommentNestedSerializer(many=True, read_only=True)
+	comments = CommentNestedSerializer(many=True, read_only=True)
 	author = serializers.SlugRelatedField('username', read_only=True)
 	category = serializers.SlugRelatedField('title', many=True, read_only=True)
 	tag = serializers.SlugRelatedField('title', many=True, read_only=True)
-	previous_post = serializers.SlugRelatedField('id', read_only=True)
+	parent_post = serializers.SlugRelatedField('id', read_only=True)
 
 	class Meta:
 		model = Post
 		fields = [
-			'id', 'title', 'content', 'author', 'category', 'tag', 'previous_post', 'slug', 'likes', 'dislikes',
-			'views', 'comment_set'
+			'id', 'title', 'content', 'author', 'category', 'tag', 'parent_post', 'slug', 'likes', 'dislikes',
+			'views', 'comments'
 		]
 
 	def to_representation(self, instance):
 		representation = super().to_representation(instance)
-		if representation['previous_post'] is None:
-			representation.pop('previous_post')
-		if not representation['comment_set']:
-			representation.pop('comment_set')
+		if representation['parent_post'] is None:
+			representation.pop('parent_post')
+		if not representation['comments']:
+			representation.pop('comments')
 		return representation
 
 

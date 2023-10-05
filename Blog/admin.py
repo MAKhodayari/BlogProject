@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.db.models import Count
-from django.template.defaultfilters import truncatewords
 
 from Blog.actions import *
 from Blog.models import *
@@ -15,25 +14,9 @@ class BaseAdmin(admin.ModelAdmin):
 	list_per_page = 10
 
 
-class CategoryTagAdmin(BaseAdmin):
-	fields = ['title']
-	list_display = ['title', 'get_post_count'] + BaseAdmin.list_display
-	ordering = ['title']
-
-	def get_queryset(self, request):
-		queryset = super().get_queryset(request)
-		queryset = queryset.annotate(post_count=Count('post'))
-		return queryset
-
-	def get_post_count(self, obj):
-		return obj.post_count
-
-	get_post_count.short_description = 'post count'
-
-
 @admin.register(Post)
 class PostAdmin(BaseAdmin):
-	fields = ['title', 'content', 'category', 'tag', 'author', 'previous_post']
+	fields = ['title', 'content', 'category', 'tag', 'author', 'parent_post']
 	list_display = [
 		'shorten_title', 'shorten_content', 'get_category', 'get_tag', 'author', 'shorten_post', 'likes', 'dislikes',
 		'get_comment_count', 'views'
@@ -44,7 +27,7 @@ class PostAdmin(BaseAdmin):
 
 	def get_queryset(self, request):
 		queryset = super().get_queryset(request)
-		queryset = queryset.annotate(comment_count=Count('comment'))
+		queryset = queryset.annotate(comment_count=Count('comments'))
 		return queryset
 
 	def shorten_title(self, obj):
@@ -54,8 +37,8 @@ class PostAdmin(BaseAdmin):
 		return truncatewords(obj.content, 15)
 
 	def shorten_post(self, obj):
-		if obj.previous_post is not None:
-			return truncatewords(obj.previous_post.title, 10)
+		if obj.parent_post is not None:
+			return truncatewords(obj.parent_post.title, 10)
 		return
 
 	def get_category(self, obj):
@@ -69,7 +52,7 @@ class PostAdmin(BaseAdmin):
 
 	shorten_title.short_description = 'title'
 	shorten_content.short_description = 'content'
-	shorten_post.short_description = 'previous_post'
+	shorten_post.short_description = 'parent_post'
 	get_category.short_description = 'category'
 	get_tag.short_description = 'tag'
 	get_comment_count.short_description = 'comment count'
@@ -77,7 +60,7 @@ class PostAdmin(BaseAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(BaseAdmin):
-	fields = ['author', 'content', 'post', 'previous_comment']
+	fields = ['author', 'content', 'post', 'parent_comment']
 	list_display = [
 		'author', 'shorten_content', 'shorten_post', 'shorten_comment', 'likes', 'dislikes'
 	] + BaseAdmin.list_display
@@ -91,20 +74,32 @@ class CommentAdmin(BaseAdmin):
 		return truncatewords(obj.post.title, 10)
 
 	def shorten_comment(self, obj):
-		if obj.previous_comment is not None:
-			return truncatewords(obj.previous_comment, 10)
+		if obj.parent_comment is not None:
+			return truncatewords(obj.parent_comment, 10)
 		return
 
 	shorten_content.short_description = 'content'
 	shorten_post.short_description = 'post'
-	shorten_comment.short_description = 'previous comment'
-
-
-@admin.register(Category)
-class CategoryAdmin(CategoryTagAdmin):
-	pass
+	shorten_comment.short_description = 'parent comment'
 
 
 @admin.register(Tag)
-class TagAdmin(CategoryTagAdmin):
-	pass
+class TagAdmin(BaseAdmin):
+	fields = ['title']
+	list_display = ['title', 'get_post_count'] + BaseAdmin.list_display
+	ordering = ['title']
+
+	def get_queryset(self, request):
+		queryset = super().get_queryset(request)
+		queryset = queryset.annotate(post_count=Count('posts'))
+		return queryset
+
+	def get_post_count(self, obj):
+		return obj.post_count
+
+	get_post_count.short_description = 'post count'
+
+
+@admin.register(Category)
+class CategoryAdmin(TagAdmin):
+	fields = TagAdmin.fields + ['parent_category']
