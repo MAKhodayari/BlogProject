@@ -9,6 +9,7 @@ urlpatterns = [
 	# Normal Views
 	path('', IndexView.as_view(), name='index'),
 	path('posts/', PostListView.as_view(), name='post_list'),
+	path('posts/new/', CreatePostView.as_view(), name='create_post'),
 	path('posts/<slug>/', PostDetailView.as_view(), name='post_detail'),
 	path('posts/<slug>/like/', ReactToPostView.as_view(reaction='like'), name='like_post'),
 	path('posts/<slug>/dislike/', ReactToPostView.as_view(reaction='dislike'), name='dislike_post'),

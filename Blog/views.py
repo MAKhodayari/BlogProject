@@ -1,9 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from rest_framework import viewsets
 
+from Blog.forms import PostForm
 from Blog.serializers import *
 
 
@@ -86,6 +88,17 @@ class AuthorDetailView(DetailView):
 
 	def get_object(self, queryset=None):
 		return User.objects.get(username=self.kwargs['username'])
+
+
+class CreatePostView(LoginRequiredMixin, CreateView):
+	form_class = PostForm
+	template_name = 'create_post.html'
+	success_url = reverse_lazy('post_list')
+	extra_context = {'title': 'Add Post'}
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
 
 
 class PostViewSet(viewsets.ModelViewSet):
