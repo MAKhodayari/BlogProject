@@ -24,7 +24,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'Blog.apps.BlogConfig',
-	'User.apps.UserConfig'
+	'User.apps.UserConfig',
 
 	# Third Party
 	'rest_framework',
