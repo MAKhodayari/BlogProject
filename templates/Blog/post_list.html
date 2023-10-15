@@ -1,30 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>{{ title }}</title>
-	<link rel="stylesheet" href="/css.css"/>
-</head>
-<body class="post-list">
-{% if object_list.exists %}
-	<h1>{{ header }}</h1>
-	{% for object in object_list %}
-		<div class="post-entry">
-			<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
-			<p>{{ object.content | truncatewords:15 }}</p>
-			<p>
-				By <a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a> in
-				{% for category in object.category.all %}
-					<a class="chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
-				{% endfor %}
-			</p>
-		</div>
-	{% endfor %}
-{% else %}
-	<h1>No Post Available</h1>
-{% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+	{% if object_list.exists %}
+		<h1>{{ header }}</h1>
+		{% for object in object_list %}
+			<div class="post-entry">
+				<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
+				<p>{{ object.content | truncatewords:15 }}</p>
+				<p>
+					By <a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a>
+					in
+					{% for category in object.category.all %}
+						<a class="chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
+					{% endfor %}
+				</p>
+			</div>
+		{% endfor %}
+	{% else %}
+		<h1>No Post Available</h1>
+	{% endif %}
+{% endblock %}
