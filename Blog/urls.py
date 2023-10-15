@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.routers import DefaultRouter
@@ -6,8 +7,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from Blog.views import *
 
 urlpatterns = [
-	# Normal Views
+	# ...
 	path('', IndexView.as_view(), name='index'),
+	path('signup/', UserSignUpView.as_view(), name='sign_up'),
+	path('signin/', UserSignInView.as_view(), name='sign_in'),
+	path('logout/', LogoutView.as_view(), name='log_out'),
+	path('change_password/', UserChangePasswordView.as_view(), name='change_password'),
+
+	# Normal Views
 	path('posts/', PostListView.as_view(), name='post_list'),
 	path('posts/new/', CreatePostView.as_view(), name='create_post'),
 	path('posts/<slug>/', PostDetailView.as_view(), name='post_detail'),

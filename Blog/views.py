@@ -1,17 +1,35 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from rest_framework import viewsets
 
-from Blog.forms import PostForm
+from Blog.forms import *
 from Blog.serializers import *
 
 
 class IndexView(TemplateView):
 	template_name = 'index.html'
 	extra_context = {'title': 'Home', 'message': 'Welcome', 'owner': 'Mohammad Ali Khodayari'}
+
+
+class UserSignUpView(CreateView):
+	form_class = UserSignUpForm
+	template_name = 'create_user.html'
+	success_url = reverse_lazy('create_post')
+	extra_context = {'title': 'Sign Up'}
+
+
+class UserSignInView(LoginView):
+	template_name = 'login.html'
+	next_page = reverse_lazy('create_post')
+	extra_context = {'title': 'Sign In'}
+
+
+class UserChangePasswordView(PasswordChangeView):
+	template_name = 'change_password.html'
 
 
 class PostListView(ListView):
