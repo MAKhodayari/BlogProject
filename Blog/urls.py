@@ -1,4 +1,3 @@
-from django.contrib.auth.views import LogoutView
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.routers import DefaultRouter
@@ -7,25 +6,24 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from Blog.views import *
 
 urlpatterns = [
-	# ...
-	path('', IndexView.as_view(), name='index'),
-	path('signup/', UserSignUpView.as_view(), name='sign_up'),
-	path('signin/', UserSignInView.as_view(), name='sign_in'),
-	path('logout/', LogoutView.as_view(), name='log_out'),
-	path('change_password/', UserChangePasswordView.as_view(), name='change_password'),
-
 	# Normal Views
+	path('', IndexView.as_view(), name='index'),
+
 	path('posts/', PostListView.as_view(), name='post_list'),
-	path('posts/new/', CreatePostView.as_view(), name='create_post'),
+	path('posts/new/', CreatePostView.as_view(), name='post_crete'),
 	path('posts/<slug>/', PostDetailView.as_view(), name='post_detail'),
-	path('posts/<slug>/like/', ReactToPostView.as_view(reaction='like'), name='like_post'),
-	path('posts/<slug>/dislike/', ReactToPostView.as_view(reaction='dislike'), name='dislike_post'),
-	path('comments/<pk>/like/', ReactToCommentView.as_view(reaction='like'), name='like_comment'),
-	path('comments/<pk>/dislike/', ReactToCommentView.as_view(reaction='dislike'), name='dislike_comment'),
+	path('posts/<slug>/like/', ReactToPostView.as_view(reaction='like'), name='post_like'),
+	path('posts/<slug>/dislike/', ReactToPostView.as_view(reaction='dislike'), name='post_dislike'),
+
+	path('comments/<pk>/like/', ReactToCommentView.as_view(reaction='like'), name='comment_like'),
+	path('comments/<pk>/dislike/', ReactToCommentView.as_view(reaction='dislike'), name='comment_dislike'),
+
 	path('categories/', CategoryListView.as_view(), name='category_list'),
 	path('categories/<slug>/', CategoryDetailView.as_view(), name='category_detail'),
+
 	path('tags/', TagListView.as_view(), name='tag_list'),
 	path('tags/<slug>/', TagDetailView.as_view(), name='tag_detail'),
+
 	path('authors/', AuthorListView.as_view(), name='author_list'),
 	path('authors/<username>/', AuthorDetailView.as_view(), name='author_detail'),
 

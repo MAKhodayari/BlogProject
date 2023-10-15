@@ -6,18 +6,15 @@
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>{{ object.title }}</title>
-	<link rel="stylesheet" href="/static/css.css"/>
+	<link rel="stylesheet" href="/css.css"/>
 </head>
 <body class="post-list">
 {% if object.posts.all.exists %}
-	<h1>Posts in {{ object.title }}</h1>
+	<h1>{{ object.username }}'s Posts</h1>
 	{% for object in object.posts.all %}
 		<div class="post-entry">
 			<h2><a href="{% url 'post_detail' object.slug %}">{{ object.title }}</a></h2>
 			<p>{{ object.content | truncatewords:15 }}</p>
-			<p>
-				<a class="chip" href="{% url 'author_detail' object.author.username %}">{{ object.author }}</a>
-			</p>
 		</div>
 	{% endfor %}
 {% else %}
